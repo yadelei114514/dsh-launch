@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>DSH Launch</title>
+  <link rel="stylesheet" href="/style.css" />
+</head>
+<body>
+  <div id="app">
+    <!-- Login view -->
+    <section id="login" class="hidden">
+      <form class="card login-card" id="login-form">
+        <h1>DSH Launch</h1>
+        <p class="muted">DeepSeek Harness 管理控制台</p>
+        <label>用户名 <input id="login-user" autocomplete="username" required /></label>
+        <label>密码 <input id="login-pass" type="password" autocomplete="current-password" required /></label>
+        <button type="submit">登录</button>
+        <div id="login-error" class="error"></div>
+      </form>
+    </section>
+
+    <!-- Main view -->
+    <section id="main" class="hidden">
+      <header class="topbar">
+        <div class="brand">DSH Launch</div>
+        <div class="top-actions">
+          <span id="who" class="muted"></span>
+          <button class="ghost" id="btn-config">站点配置</button>
+          <button class="ghost" id="btn-password">修改密码</button>
+          <button class="ghost" id="btn-logout">退出</button>
+        </div>
+      </header>
+
+      <div id="warn" class="warn hidden"></div>
+
+      <div class="toolbar">
+        <h2>服务</h2>
+        <div>
+          <button class="ghost" id="btn-versions">dsh 版本</button>
+          <button id="btn-add">新增服务</button>
+        </div>
+      </div>
+
+      <div id="services" class="services"></div>
+    </section>
+  </div>
+
+  <!-- Service editor modal -->
+  <div id="modal" class="modal hidden">
+    <div class="modal-box">
+      <h3 id="modal-title">新增服务</h3>
+      <input type="hidden" id="svc-id" />
+      <label>名称 <input id="svc-name" placeholder="dsh web" /></label>
+      <label>dsh profile（子命令） <input id="svc-profile" placeholder="web" /></label>
+      <label>参数（每行一个） <textarea id="svc-args" rows="3" placeholder="--no-open&#10;--port&#10;3080"></textarea></label>
+      <label>环境变量（每行 KEY=value） <textarea id="svc-env" rows="3"></textarea></label>
+      <label>工作目录 <input id="svc-workdir" placeholder="/" /></label>
+      <label>端口 <input id="svc-port" type="number" placeholder="3080" /></label>
+      <label class="row">
+        <span>异常重启策略</span>
+        <select id="svc-restart">
+          <option value="exponential">指数退避并暂停</option>
+          <option value="fixed">固定间隔重启</option>
+          <option value="none">不重启</option>
+        </select>
+      </label>
+      <div class="grid2">
+        <label>最大重启次数 <input id="svc-maxrestarts" type="number" value="5" /></label>
+        <label>重启间隔(秒) <input id="svc-delay" type="number" value="3" /></label>
+      </div>
+      <label>内存上限 MiB（0=不限） <input id="svc-mem" type="number" value="0" /></label>
+      <label>dsh 版本（填 inherit=跟随全局，或 system，或已安装版本号） <input id="svc-version" placeholder="inherit" /></label>
+      <label class="row"><span>开机自启</span><input id="svc-autostart" type="checkbox" /></label>
+      <div id="modal-error" class="error"></div>
+      <div class="modal-actions">
+        <button class="ghost" id="btn-cancel">取消</button>
+        <button id="btn-save">保存</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Versions modal -->
+  <div id="vmodal" class="modal hidden">
+    <div class="modal-box">
+      <h3>dsh 版本管理</h3>
+      <p class="muted">切换版本后，需重启对应服务以生效。旧版本保留以便回退。</p>
+      <div id="versions-list"></div>
+      <div class="install-row">
+        <input id="vinstall-input" placeholder="版本号，如 0.2.2-rc.5" />
+        <button id="btn-vinstall">安装</button>
+      </div>
+      <div id="version-log" class="logbox small"></div>
+      <div class="modal-actions"><button class="ghost" id="btn-vclose">关闭</button></div>
+    </div>
+  </div>
+
+  <!-- Config modal -->
+  <div id="cmodal" class="modal hidden">
+    <div class="modal-box">
+      <h3>站点配置</h3>
+      <label>管理页域名 <input id="cfg-launch" placeholder="launch.example.com" /></label>
+      <label>dsh web 域名（用于生成 token 链接） <input id="cfg-dsh" placeholder="dsh.example.com" /></label>
+      <label>dsh 可执行文件路径 <input id="cfg-dshpath" placeholder="dsh" /></label>
+      <div id="cfg-error" class="error"></div>
+      <div class="modal-actions">
+        <button class="ghost" id="btn-cfg-cancel">取消</button>
+        <button id="btn-cfg-save">保存</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="toast" class="toast hidden"></div>
+  <script src="/app.js"></script>
+</body>
+</html>

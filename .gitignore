@@ -1,0 +1,10 @@
+node_modules/
+dist/
+data/
+*.log
+.env
+dist-test/
+
+# 人设皮肤素材，非本项目内容
+blue-fat-fish/
+blue-fat-fish-v11/

@@ -1,0 +1,10 @@
+# Allow the dsh-launch service account to control only dsh-launch-* units.
+# Adjust the username/paths to match your install.
+Cmnd_Alias DSHL = /usr/bin/systemctl start dsh-launch-*, \\
+                  /usr/bin/systemctl stop dsh-launch-*, \\
+                  /usr/bin/systemctl restart dsh-launch-*, \\
+                  /usr/bin/systemctl enable dsh-launch-*, \\
+                  /usr/bin/systemctl daemon-reload, \\
+                  /usr/bin/journalctl -u dsh-launch-*
+Cmnd_Alias DSHL_CP = /usr/bin/cp * /etc/systemd/system/dsh-launch-*.service
+dsh-launch ALL=(root) NOPASSWD: DSHL, DSHL_CP

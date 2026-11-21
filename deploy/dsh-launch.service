@@ -1,0 +1,21 @@
+[Unit]
+Description=DSH Launch - DeepSeek Harness web manager
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+# Run as the service account that owns this install and is allowed to sudo systemctl.
+# Creating a dedicated user and a narrow sudoers rule is recommended (see README).
+User=dsh-launch
+Group=dsh-launch
+WorkingDirectory=/opt/dsh-launch
+Environment=DSH_LAUNCH_HOME=/var/lib/dsh-launch
+Environment=DSH_LAUNCH_BIND_HOST=127.0.0.1
+Environment=DSH_LAUNCH_BIND_PORT=8081
+ExecStart=/usr/bin/node /opt/dsh-launch/dist/cli.js serve
+Restart=on-failure
+RestartSec=3
+
+[Install]
+WantedBy=multi-user.target

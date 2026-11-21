@@ -1,0 +1,30 @@
+{
+  "name": "dsh-launch",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Web manager to start/stop/manage DeepSeek Harness (dsh) services and surface the dsh web token.",
+  "type": "module",
+  "bin": {
+    "dsh-launch": "dist/cli.js"
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "test": "tsc -p tsconfig.json && tsc -p tsconfig.test.json && node --test dist-test/*.test.js",
+    "start": "node dist/cli.js serve",
+    "install-service": "node dist/cli.js install",
+    "set-password": "node dist/cli.js set-password",
+    "dev": "tsc -p tsconfig.json && node dist/cli.js serve"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "dependencies": {
+    "express": "^4.19.2"
+  },
+  "devDependencies": {
+    "@types/express": "^4.17.21",
+    "@types/node": "^22.5.0",
+    "typescript": "^5.5.4"
+  }
+}
